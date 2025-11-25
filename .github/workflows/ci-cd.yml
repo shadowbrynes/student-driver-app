@@ -1,0 +1,13 @@
+﻿name: CI/CD Pipeline
+on: { push: { branches: [main] } }
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform init
+      - run: terraform plan
+      - run: terraform apply -auto-approve
+      - uses: dawidd6/action-ansible-playbook@v2
+        with: { playbook: ansible/setup.yml }

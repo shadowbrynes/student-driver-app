@@ -1,0 +1,14 @@
+﻿---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update and upgrade servers
+      apt: { update_cache: yes, upgrade: dist }
+    - name: Install Java
+      apt: { name: openjdk-11-jdk, state: present }
+    - name: Install Docker
+      apt: { name: docker.io, state: present }
+    - name: Start Docker
+      service: { name: docker, state: started, enabled: yes }
+    - name: Pull Nginx container
+      docker_container: { name: nginx, image: nginx:latest, state: started, ports: ["80:80"] }
